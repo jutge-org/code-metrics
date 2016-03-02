@@ -5,13 +5,13 @@ Given a program, the website displays several code metrics related to it, such a
 number of lines of code, number of tokens, number of comments and cyclomatic complexity.
 Details for each function are also shown.
 
-## Dependencies:
+### Dependencies
 ```
 sudo pip install lizard
 sudo apt-get install cloc
 ```
 
-## Commands:
+### Commands
 ```
 npm install
 npm start
