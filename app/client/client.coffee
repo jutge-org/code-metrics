@@ -31,9 +31,9 @@ int main () {
 }
 """
 
-        editor = ace.edit "editor"
+        editor = ace.edit 'editor'
 
-        editor.getSession().setMode("ace/mode/c_cpp");
+        editor.getSession().setMode 'ace/mode/c_cpp'
         #editor.setTheme 'ace/theme/monokai'
         editor.setShowPrintMargin false
         editor.renderer.setShowGutter true
@@ -41,7 +41,7 @@ int main () {
         editor.setOptions
             minLines: 25
             maxLines: 25
-            fontSize: "12pt"
+            fontSize: '12pt'
             highlightActiveLine: false
         editor.setValue sample, -1
         editor.setValue sample, 1
@@ -59,3 +59,19 @@ window.start_submission = ->
 
     $(document).ready ->
         hljs.initHighlightingOnLoad()
+
+
+
+window.set_lang = ->
+
+    modes =
+        c: 'c_cpp'
+        cc: 'c_cpp'
+        js: 'javascript'
+        py: 'python'
+        rb: 'ruby'
+
+    lang = $('#lang').val()
+    editor = ace.edit 'editor'
+    editor.getSession().setMode 'ace/mode/'+modes[lang]
+

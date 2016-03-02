@@ -13,18 +13,15 @@ block content
 
         form(role='form', method='POST', action='/'+uuid)
 
-            input(type='hidden', name='code', value='')
-            #editor(class='form-control', style='margin-bottom: 12px;')
-
             .row
 
                 .col-xs-2
 
-                    select(class='form-control')
+                    select#lang(class='form-control', onchange='set_lang();')
                         option(value='c') C
-                        option(value='cpp', selected='selected') C++
-                        option(value='py') Python
+                        option(value='cc', selected='selected') C++
                         option(value='js') Javascript
+                        option(value='py') Python
                         option(value='rb') Ruby
 
                 .col-xs-10
@@ -33,6 +30,10 @@ block content
                         button.btn.btn-primary(type='submit')
                             i.fa.fa-fw.fa-paper-plane-o
                             span &nbsp; Submit
+
+            input(type='hidden', name='code', value='')
+            #editor(class='form-control', style='margin-top: 12px;')
+
 
     script.
         start_index()
