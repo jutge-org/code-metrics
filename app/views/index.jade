@@ -1,0 +1,24 @@
+extends layout
+
+block content
+
+    .row
+        .jumbotron(style='padding: 1em;')
+            img(src='code-metrics.png', height='128', align='left')
+            h1
+                b code-metrics
+            p Compute code metrics for various languages (well, just C++ for now)
+
+    .row
+
+        form(role='form', method='POST', action='/'+uuid)
+            input(type='hidden', name='code', value='')
+            #editor(class='form-control', style='margin-bottom: 12px;')
+            .text-right
+                button.btn.btn-primary(type='submit')
+                    i.fa.fa-fw.fa-paper-plane-o
+                    span &nbsp; Submit
+
+    script.
+        start_index()
+

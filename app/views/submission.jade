@@ -1,0 +1,40 @@
+extends layout
+
+block content
+
+    .row
+        .jumbotron(style='padding: 1em;')= title
+
+        .panel.panel-default
+            .panel-heading Code metrics
+                span.pull-right= metrics['*'].language
+            table.table
+                tr
+                    th
+                    th.text-right ccn
+                    th.text-right nloc
+                    th.text-right tokens
+                    th.text-right comments
+                tr
+                    td: i program
+                    td.text-right= metrics['*'].ccn
+                    td.text-right= metrics['*'].nloc
+                    td.text-right= metrics['*'].tokens
+                    td.text-right= metrics['*'].comments
+                for info,func in metrics
+                    if func != "*"
+                        tr
+                            td= info.name
+                            td.text-right= info.ccn
+                            td.text-right= info.nloc
+                            td.text-right= info.tokens
+                            td
+
+        .panel.panel-default
+            .panel-heading Program
+            .panel-body
+                pre(style='background: white; border: 0px; padding: 0px;')
+                    code= code
+
+    script.
+        start_submission()

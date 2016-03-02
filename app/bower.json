@@ -1,0 +1,24 @@
+{
+  "name": "code-metrics-app",
+  "description": "code-metrics-app",
+  "main": "",
+  "authors": [
+    "Jordi Petit <jpetit@cs.upc.edu>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/jutge-org/code-metrics",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "ace-builds": "",
+    "jquery": "",
+    "bootstrap": "",
+    "font-awesome": "^4.5.0",
+    "highlightjs": "^9.1.0"
+  }
+}
