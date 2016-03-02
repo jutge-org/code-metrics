@@ -4,10 +4,10 @@ block content
 
     .row
         .jumbotron(style='padding: 1em;')
-            img(src='code-metrics.png', height='128', align='left')
+            img(src='code-metrics.png', height='128', align='left', style='margin-right: 24px;')
             h1
                 b code-metrics
-            p Compute code metrics for various languages (well, just C++ for now)
+            p Compute code metrics for various languages
 
     .row
 
@@ -24,11 +24,17 @@ block content
                         option(value='py') Python
                         option(value='rb') Ruby
 
-                .col-xs-10
+                .col-xs-2
+
+                    button.btn.btn-default(type='button', onclick='set_sample()')
+                        i.fa.fa-pencil
+                        span &nbsp; Sample
+
+                .col-xs-8
 
                     .text-right
                         button.btn.btn-primary(type='submit')
-                            i.fa.fa-fw.fa-paper-plane-o
+                            i.fa.fa-paper-plane-o
                             span &nbsp; Submit
 
             input(type='hidden', name='code', value='')

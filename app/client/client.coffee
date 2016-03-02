@@ -1,35 +1,87 @@
 
+sample =
 
-window.start_index = ->
+    c: """
+#include <stdio.h>
 
-    $(document).ready ->
-
-        sample = """
-/* Sample code */
-
-#include <iostream>
-#include <vector>
-using namespace std;
-
-// euclid
-int mcd (int a, int b) {
+/* Euclid */
+int gcd (int a, int b) {
     while (a != b) {
-        if (a > b) a = a - b;
-        else b = b - a;
+        if (a > b) a -= b;
+        else b -= a;
     }
     return a;
 }
 
-// main
+/* Main */
 int main () {
-    cout << "Give me two numbers: ";
     int x, y;
-    cin >> x >> y;
-    int m = mcd(x, y);
-    cout << "The mcd of " << x << " and " << y << " is " << m << endl;
-    cout << mcd(x, y) << endl;
+    scanf("%d %d", &x, &y);
+    printf("%i\\n", gcd(x, y));
 }
 """
+
+    cc: """
+#include <iostream>
+using namespace std;
+
+// Euclid
+int gcd (int a, int b) {
+    while (a != b) {
+        if (a > b) a -= b;
+        else b -= a;
+    }
+    return a;
+}
+
+// Main
+int main () {
+    int x, y;
+    cin >> x >> y;
+    cout << gcd(x, y) << endl;
+}
+"""
+
+    js: """
+// Euclid
+function gcd (a, b) {
+    while (a != b) {
+        if (a > b) a -= b;
+        else b -= a;
+    }
+    return a;
+}
+
+"""
+
+    py: """
+# Euclid
+def gcd (a, b):
+    while a != b:
+        if a > b: a -= b
+        else: b -= a;
+    return a;
+
+# main
+x = raw_input()
+y = raw_input()
+print(gcd(x,y))
+"""
+
+    rb: """
+# Euclid, fast
+def gcd (u, v)
+  while v > 0
+    u, v = v, u % v
+  end
+  u
+end
+"""
+
+
+window.start_index = ->
+
+    $(document).ready ->
 
         editor = ace.edit 'editor'
 
@@ -39,12 +91,12 @@ int main () {
         editor.renderer.setShowGutter true
         editor.getSession().setUseWrapMode false
         editor.setOptions
-            minLines: 25
-            maxLines: 25
+            minLines: 21
+            maxLines: 21
             fontSize: '12pt'
             highlightActiveLine: false
-        editor.setValue sample, -1
-        editor.setValue sample, 1
+        editor.setValue sample.cc, -1
+        editor.setValue sample.cc, 1
 
 
         $editor = $('#editor')
@@ -74,4 +126,12 @@ window.set_lang = ->
     lang = $('#lang').val()
     editor = ace.edit 'editor'
     editor.getSession().setMode 'ace/mode/'+modes[lang]
+
+
+window.set_sample = ->
+
+    editor = ace.edit 'editor'
+    lang = $('#lang').val()
+    editor.setValue sample[lang], -1
+    editor.setValue sample[lang], 1
 
