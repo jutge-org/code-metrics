@@ -12,12 +12,27 @@ block content
     .row
 
         form(role='form', method='POST', action='/'+uuid)
+
             input(type='hidden', name='code', value='')
             #editor(class='form-control', style='margin-bottom: 12px;')
-            .text-right
-                button.btn.btn-primary(type='submit')
-                    i.fa.fa-fw.fa-paper-plane-o
-                    span &nbsp; Submit
+
+            .row
+
+                .col-xs-2
+
+                    select(class='form-control')
+                        option(value='c') C
+                        option(value='cpp', selected='selected') C++
+                        option(value='py') Python
+                        option(value='js') Javascript
+                        option(value='rb') Ruby
+
+                .col-xs-10
+
+                    .text-right
+                        button.btn.btn-primary(type='submit')
+                            i.fa.fa-fw.fa-paper-plane-o
+                            span &nbsp; Submit
 
     script.
         start_index()
