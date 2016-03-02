@@ -47,8 +47,9 @@ submit = (req, res, next) ->
                     fs.writeFile "#{path}.json", stdout, (err) ->
                         submission req, res, next
         else
-            res.render 'rewrite',
+            res.render 'myerror',
                 title: 'Code Metrics'
+                msg: 'Submission already exists.'
 
 
 submission = (req, res, next) ->
@@ -56,13 +57,19 @@ submission = (req, res, next) ->
     id = req.params.id
     path = "#{dat}/#{id}"
 
-    fs.readFile "#{path}.cc", (err, code) ->
-        fs.readFile "#{path}.json", (err, data) ->
-            metrics = JSON.parse data
-            res.render 'submission',
-                title: 'Submission ' + id
-                code: code
-                metrics: metrics
+    fs.access "#{path}.cc", fs.F_OK, (stat) ->
+        if not stat
+            fs.readFile "#{path}.cc", (err, code) ->
+                fs.readFile "#{path}.json", (err, data) ->
+                    metrics = JSON.parse data
+                    res.render 'submission',
+                        title: 'Submission ' + id
+                        code: code
+                        metrics: metrics
+        else
+            res.render 'myerror',
+                title: 'Code Metrics'
+                msg: 'Submission does not exist.'
 
 
 
