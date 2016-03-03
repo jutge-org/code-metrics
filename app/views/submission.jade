@@ -9,25 +9,31 @@ block content
         .panel-heading Code metrics
         table.table
             tr
-                th
-                th.text-right ccn
-                th.text-right nloc
-                th.text-right tokens
-                th.text-right comments
+                th.col-sm-3
+                th.col-sm-1.text-right(title="Number of lines") lin
+                th.col-sm-1.text-right(title="Number of lines of code") nloc
+                th.col-sm-1.text-right(title="Number of token") toks
+                th.col-sm-1.text-right(title="Number of comments") com
+                th.col-sm-1.text-right(title="Halstead's difficulty metric") dif
+                th.col-sm-1.text-right(title="McCabe's cyclomatic complexity number") ccn
             tr
-                td: i program
-                td.text-right= metrics['*'].ccn
-                td.text-right= metrics['*'].nloc
-                td.text-right= metrics['*'].tokens
-                td.text-right= metrics['*'].comments
+                td.col-sm-3: i program
+                td.col-sm-1.text-right= metrics['*'].lines
+                td.col-sm-1.text-right= metrics['*'].nloc
+                td.col-sm-1.text-right= metrics['*'].tokens
+                td.col-sm-1.text-right= metrics['*'].comments
+                td.col-sm-1.text-right= metrics['*'].halstead.difficulty
+                td.col-sm-1.text-right= metrics['*'].ccn
             for info,func in metrics
                 if func != "*"
                     tr
-                        td= info.name
-                        td.text-right= info.ccn
-                        td.text-right= info.nloc
-                        td.text-right= info.tokens
-                        td
+                        td.col-sm-3= info.name
+                        td.col-sm-1.text-right= info.lines
+                        td.col-sm-1.text-right= info.nloc
+                        td.col-sm-1.text-right= info.tokens
+                        td.col-sm-1
+                        td.col-sm-1
+                        td.col-sm-1.text-right= info.ccn
 
     .panel.panel-default
         .panel-heading Program
