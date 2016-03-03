@@ -13,6 +13,7 @@ bodyParser = require "body-parser"
 fs = require "fs"
 childProcess = require "child_process"
 uuid = require 'node-uuid'
+moment = require 'moment'
 
 
 ###############################################################################
@@ -40,7 +41,11 @@ submit = (req, res, next) ->
     code = req.body.code
     lang = req.body.lang
     json = dat+'/'+id+'.json'
+    inf = dat+'/'+id+'.inf'
     source = dat+'/'+id+'.'+lang
+    meta =
+        time: moment().format 'YYYY-MM-DD hh:mm:ss'
+        ip: req.connection.remoteAddress
 
     if not id.match /^\w+$/
         res.render 'myerror',
@@ -66,11 +71,12 @@ submit = (req, res, next) ->
                 msg: 'Submission already exists.'
         else
             # the json file does not exist
-            fs.writeFile source, code+'\n',  (err) ->
-                cmd = "cd #{dat} ; #{__dirname}/bin/code-metrics.py #{id}.#{lang}"
-                childProcess.exec cmd, (err, stdout, stderr) ->
-                    fs.writeFile json, stdout, (err) ->
-                        submission req, res, next
+            fs.writeFile inf, JSON.stringify(meta, null, 2) + '\n',  (err) ->
+                fs.writeFile source, code+'\n',  (err) ->
+                    cmd = "cd #{dat} ; #{__dirname}/bin/code-metrics.py #{id}.#{lang}"
+                    childProcess.exec cmd, (err, stdout, stderr) ->
+                        fs.writeFile json, stdout + '\n', (err) ->
+                            submission req, res, next
 
 
 submission = (req, res, next) ->
