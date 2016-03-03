@@ -31,45 +31,76 @@ dat = "/tmp/dat"
 index = (req, res, next) ->
     res.render 'index',
         title: 'Code Metrics'
-        uuid: uuid.v1().replace /-/g, ''
+        uuid: uuid.v4().replace /-/g, ''
 
 
 submit = (req, res, next) ->
 
     id = req.params.id
     code = req.body.code
-    path = "#{dat}/#{id}"
+    lang = req.body.lang
+    json = dat+'/'+id+'.json'
+    source = dat+'/'+id+'.'+lang
 
-    fs.access "#{path}.cc", fs.F_OK, (stat) ->
-        if stat
-            fs.writeFile "#{path}.cc", code+'\n',  (err) ->
-                childProcess.exec "bin/code-metrics.py #{path}.cc", (err, stdout, stderr) ->
-                    fs.writeFile "#{path}.json", stdout, (err) ->
-                        submission req, res, next
-        else
+    if not id.match /^\w+$/
+        res.render 'myerror',
+            title: 'Code Metrics'
+            msg: 'Invalid submission.'
+        return
+    if not lang.match /^\w+$/
+        res.render 'myerror',
+            title: 'Code Metrics'
+            msg: 'Invalid language.'
+        return
+    if code.length > 64*1024
+        res.render 'myerror',
+            title: 'Code Metrics'
+            msg: 'Program too long.'
+        return
+
+    fs.access json, fs.F_OK, (stat) ->
+        if not stat
+            # the json file exists
             res.render 'myerror',
                 title: 'Code Metrics'
                 msg: 'Submission already exists.'
+        else
+            # the json file does not exist
+            fs.writeFile source, code+'\n',  (err) ->
+                cmd = "cd #{dat} ; #{__dirname}/bin/code-metrics.py #{id}.#{lang}"
+                childProcess.exec cmd, (err, stdout, stderr) ->
+                    fs.writeFile json, stdout, (err) ->
+                        submission req, res, next
 
 
 submission = (req, res, next) ->
 
     id = req.params.id
-    path = "#{dat}/#{id}"
+    json = dat+'/'+id+'.json'
 
-    fs.access "#{path}.cc", fs.F_OK, (stat) ->
-        if not stat
-            fs.readFile "#{path}.cc", (err, code) ->
-                fs.readFile "#{path}.json", (err, data) ->
-                    metrics = JSON.parse data
+    if not id.match /^\w+$/
+        res.render 'myerror',
+            title: 'Code Metrics'
+            msg: 'Invalid submission.'
+        return
+
+
+    fs.access json, fs.F_OK, (stat) ->
+        if stat
+            # the json file does not exist
+            res.render 'myerror',
+                title: 'Code Metrics'
+                msg: 'Submission does not exist.'
+        else
+            # the json file exists
+            fs.readFile json, (err, data) ->
+                metrics = JSON.parse data
+                source = dat+'/'+metrics['*'].name
+                fs.readFile source, (err, code) ->
                     res.render 'submission',
                         title: 'Submission ' + id
                         code: code
                         metrics: metrics
-        else
-            res.render 'myerror',
-                title: 'Code Metrics'
-                msg: 'Submission does not exist.'
 
 
 
@@ -132,11 +163,6 @@ if app.get("env") is "development"
             error: err
 
 
-# pretty print html
-if app.get("env") is "development"
-    app.locals.pretty = true
-
-
 # production error handler
 # no stacktraces leaked to user
 app.use (err, req, res, next) ->
@@ -144,6 +170,12 @@ app.use (err, req, res, next) ->
     res.render "error",
         message: err.message,
         error: {}
+
+
+# pretty print html
+if app.get("env") is "development"
+    app.locals.pretty = true
+
 
 
 

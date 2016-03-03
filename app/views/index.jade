@@ -2,44 +2,43 @@ extends layout
 
 block content
 
-    .row
-        .jumbotron(style='padding: 1em;')
-            img(src='code-metrics.png', height='128', align='left', style='margin-right: 24px;')
-            h1
-                b code-metrics
-            p Compute code metrics for various languages
+    .jumbotron(style='padding: 1em;')
+        img(src='code-metrics.png', height='128', align='left', style='margin-right: 24px;')
+        h1
+            b code-metrics
+        p Compute code metrics for various programming languages
 
-    .row
 
-        form(role='form', method='POST', action='/'+uuid)
+    form(role='form', method='POST', action='/'+uuid)
 
-            .row
+        .row
 
-                .col-xs-2
+            .col-xs-2
 
-                    select#lang(class='form-control', onchange='set_lang();')
-                        option(value='c') C
-                        option(value='cc', selected='selected') C++
-                        option(value='js') Javascript
-                        option(value='py') Python
-                        option(value='rb') Ruby
+                select#lang(name='lang', class='form-control', onchange='set_lang();')
+                    option(value='c') C
+                    option(value='cc', selected='selected') C++
+                    option(value='js') Javascript
+                    option(value='py') Python
+                    option(value='rb') Ruby
 
-                .col-xs-2
+            .col-xs-2
 
-                    button.btn.btn-default(type='button', onclick='set_sample()')
-                        i.fa.fa-pencil
-                        span &nbsp; Sample
+                button.btn.btn-default(type='button', onclick='set_sample()')
+                    i.fa.fa-pencil
+                    span &nbsp; Sample
 
-                .col-xs-8
+            .col-xs-8
 
-                    .text-right
-                        button.btn.btn-primary(type='submit')
-                            i.fa.fa-paper-plane-o
-                            span &nbsp; Submit
+                .text-right
+                    button.btn.btn-primary(type='submit')
+                        i.fa.fa-paper-plane-o
+                        span &nbsp; Submit
 
-            input(type='hidden', name='code', value='')
-            #editor(class='form-control', style='margin-top: 12px;')
+        input(type='hidden', name='code', value='')
+        #editor(class='form-control', style='margin-top: 12px;')
 
+    include information
 
     script.
         start_index()
