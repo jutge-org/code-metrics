@@ -14,13 +14,13 @@ fs = require "fs"
 childProcess = require "child_process"
 uuid = require 'node-uuid'
 moment = require 'moment'
-
+expandHomeDir = require 'expand-home-dir'
 
 ###############################################################################
 # Constants
 ###############################################################################
 
-dat = "/tmp/dat"
+dat = expandHomeDir '~/dat/submissions'
 
 
 
