@@ -11,6 +11,13 @@ sudo pip install lizard
 sudo apt-get install cloc
 ```
 
+or
+```
+pip install lizard
+brew install cloc
+```
+
+
 ### Commands
 ```
 npm install
